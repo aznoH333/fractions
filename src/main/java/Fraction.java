@@ -22,25 +22,50 @@ public class Fraction implements IFraction {
 
     @Override
     public IFraction plus(IFraction other) {
-        throw new UnsupportedOperationException();
+        int num = 0;
+        int den = 0;
+        if (denominator == other.getDenominator()){
+            den = denominator;
+            num = numerator + other.getNumerator();
+        }else {
+            den = findLowestCommonMultiple(denominator,other.getDenominator());
+            num = (numerator * (den/denominator)) + (other.getNumerator() * (den/ other.getDenominator()));
+        }
+
+        return new Fraction(num,den);
     }
 
     @Override
     public IFraction minus(IFraction other) {
-        throw new UnsupportedOperationException();
+        int num = 0;
+        int den = 0;
+        if (denominator == other.getDenominator()){
+            den = denominator;
+            num = numerator + other.getNumerator();
+        }else {
+            den = findLowestCommonMultiple(denominator,other.getDenominator());
+            num = (numerator * (den/denominator)) - (other.getNumerator() * (den/ other.getDenominator()));
+        }
+
+        return new Fraction(num,den);
     }
 
     @Override
     public IFraction times(IFraction other) {
-        throw new UnsupportedOperationException();
+        return new Fraction(numerator * other.getNumerator(),denominator * other.getDenominator());
     }
 
     @Override
     public IFraction dividedBy(IFraction other) {
-        throw new UnsupportedOperationException();
+        return new Fraction(denominator * other.getDenominator(),numerator * other.getNumerator());
     }
 
     public static Fraction createNormalised(Integer numerator, Integer denominator) {
+        for(int i = denominator;i > 0;i--){
+            if (denominator % i == 0 && numerator % i == 0){
+                return new Fraction(numerator / i,denominator / i);
+            }
+        }
         throw new UnsupportedOperationException();
     }
 
