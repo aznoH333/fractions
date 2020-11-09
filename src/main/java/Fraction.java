@@ -22,51 +22,30 @@ public class Fraction implements IFraction {
 
     @Override
     public IFraction plus(IFraction other) {
-        int num = 0;
-        int den = 0;
-        if (denominator == other.getDenominator()){
-            den = denominator;
-            num = numerator + other.getNumerator();
-        }else {
-            den = findLowestCommonMultiple(denominator,other.getDenominator());
-            num = (numerator * (den/denominator)) + (other.getNumerator() * (den/ other.getDenominator()));
-        }
-
-        return new Fraction(num,den);
+        int den = denominator;
+        den = findLowestCommonMultiple(denominator,other.getDenominator());
+        return createNormalised(numerator * (den/denominator)+ (other.getNumerator() * (den/ other.getDenominator())),findLowestCommonMultiple(denominator,other.getDenominator()));
     }
 
     @Override
     public IFraction minus(IFraction other) {
-        int num = 0;
-        int den = 0;
-        if (denominator == other.getDenominator()){
-            den = denominator;
-            num = numerator + other.getNumerator();
-        }else {
-            den = findLowestCommonMultiple(denominator,other.getDenominator());
-            num = (numerator * (den/denominator)) - (other.getNumerator() * (den/ other.getDenominator()));
-        }
-
-        return new Fraction(num,den);
+        int den = denominator;
+        den = findLowestCommonMultiple(denominator,other.getDenominator());
+        return createNormalised(numerator * (den/denominator)- (other.getNumerator() * (den/ other.getDenominator())),findLowestCommonMultiple(denominator,other.getDenominator()));
     }
 
     @Override
     public IFraction times(IFraction other) {
-        return new Fraction(numerator * other.getNumerator(),denominator * other.getDenominator());
+        return createNormalised(numerator * other.getNumerator(),denominator * other.getDenominator());
     }
 
     @Override
     public IFraction dividedBy(IFraction other) {
-        return new Fraction(denominator * other.getDenominator(),numerator * other.getNumerator());
+        return createNormalised(denominator * other.getDenominator(),numerator * other.getNumerator());
     }
 
     public static Fraction createNormalised(Integer numerator, Integer denominator) {
-        for(int i = denominator;i > 0;i--){
-            if (denominator % i == 0 && numerator % i == 0){
-                return new Fraction(numerator / i,denominator / i);
-            }
-        }
-        throw new UnsupportedOperationException();
+        return new Fraction(numerator/findGreatestCommonDenominator(numerator,denominator),denominator/findGreatestCommonDenominator(numerator,denominator));
     }
 
     /**
